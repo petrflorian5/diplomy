@@ -169,10 +169,8 @@ async function downloadAll() {
     progress.textContent = "Exportuji " + (i+1) + " / " + diplomas.length + " — " + name + "...";
     await new Promise(function(r){ setTimeout(r, 50); });
 
-    // Skryj obrázky — html2canvas je stejně nezvládá správně
-    var bgEl   = diplomas[i].querySelector(".d-bg");
+    // Skryj pouze logo — bg necháme html2canvas renderovat
     var logoEl = diplomas[i].querySelector(".d-logo img");
-    bgEl.style.visibility   = "hidden";
     logoEl.style.visibility = "hidden";
 
     var baseCanvas = await html2canvas(diplomas[i], {
@@ -189,19 +187,15 @@ async function downloadAll() {
       logging: false
     });
 
-    bgEl.style.visibility   = "visible";
     logoEl.style.visibility = "visible";
 
-    // Finální canvas: bg + text vrstvy + logo
+    // Finální canvas: html2canvas výsledek + logo nakreslené ručně
     var W = 794 * 2, H = 1123 * 2;
     var final = document.createElement("canvas");
     final.width = W; final.height = H;
     var ctx = final.getContext("2d");
 
-    // 1. Pozadí
-    ctx.drawImage(bgImage, 0, 0, W, H);
-
-    // 2. Text a prvky z html2canvas
+    // 1. html2canvas výsledek (obsahuje bg i text)
     ctx.drawImage(baseCanvas, 0, 0);
 
     // 3. Logo — zachování poměru (contain do 140x140 * scale 2)
@@ -211,7 +205,7 @@ async function downloadAll() {
     var dw = lw * ratio, dh = lh * ratio;
     var dx = W - maxS - 34*2 + (maxS - dw) / 2;
     var dy = 28*2 + (maxS - dh) / 2;
-    ctx.drawImage(logoImage, dx, dy, dw, dh);
+    if (logoImage) ctx.drawImage(logoImage, dx, dy, dw, dh);
 
     await new Promise(function(resolve) {
       final.toBlob(function(blob) {
@@ -233,11 +227,17 @@ async function downloadAll() {
 }
 
 function loadImage(src) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     var img = new Image();
     img.crossOrigin = "anonymous";
-    img.onload  = function(){ resolve(img); };
-    img.onerror = function(){ reject(new Error("Nelze načíst: " + src)); };
+    img.onload = function(){ resolve(img); };
+    img.onerror = function() {
+      // Fallback: zkus bez crossOrigin
+      var img2 = new Image();
+      img2.onload = function(){ resolve(img2); };
+      img2.onerror = function(){ resolve(null); };
+      img2.src = src + "?t=" + Date.now();
+    };
     img.src = src;
   });
 }</script>
