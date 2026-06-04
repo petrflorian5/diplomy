@@ -43,7 +43,7 @@
   .d-subtitle { position:absolute; top:358px; left:58px; font-family:'Barlow',sans-serif; font-weight:600; font-size:29px; color:#444; letter-spacing:.06em; text-transform:uppercase; }
   .d-divider  { position:absolute; top:406px; left:58px; width:56px; height:3px; background:var(--purple); border-radius:2px; }
   .d-name-block { position:absolute; top:436px; left:54px; right:54px; }
-  .d-first, .d-last, .d-full { display:block; font-family:'Barlow Condensed',sans-serif; font-weight:900; line-height:.93; letter-spacing:-.01em; word-break:break-word; font-size:172px; color:var(--purple-dark); }
+  .d-first, .d-last, .d-full { display:block; font-family:'Barlow Condensed',sans-serif; font-weight:900; line-height:.93; letter-spacing:-.01em; word-break:break-word; font-size:172px; color:var(--purple-dark); white-space:nowrap; }
 
   .d-footer { position:absolute; bottom:36px; left:54px; }
   .d-footer-bar   { width:44px; height:3px; background:var(--purple); border-radius:2px; margin-bottom:10px; }
@@ -92,6 +92,16 @@
 
 <script>
 var LOGO_SRC = "logo.png";
+
+function fitName(el, maxWidth) {
+  var size = 172;
+  el.style.fontSize = size + "px";
+  el.style.whiteSpace = "nowrap";
+  while (el.scrollWidth > maxWidth && size > 40) {
+    size -= 2;
+    el.style.fontSize = size + "px";
+  }
+}
 var BG_SRC   = "BG1.png";
 var generatedNames = [];
 
