@@ -15,9 +15,9 @@
   #editor p.sub { color:#555; font-size:13px; margin-bottom:20px; }
   #editor label { display:block; font-size:12px; font-weight:600; color:var(--purple-dark); margin-bottom:5px; text-transform:uppercase; letter-spacing:.05em; }
   #editor textarea { width:100%; min-height:120px; border:2px solid var(--purple-light); border-radius:10px; padding:12px 14px; font-family:'Barlow',sans-serif; font-size:15px; color:#333; resize:vertical; outline:none; }
-  #editor input[type="text"] { width:100%; border:2px solid var(--purple-light); border-radius:10px; padding:10px 13px; font-family:'Barlow',sans-serif; font-size:16px; color:#333; outline:none; margin-bottom:14px; }
+  #editor input[type="text"] { width:100%; border:2px solid var(--purple-light); border-radius:10px; padding:10px 13px; font-family:'Barlow',sans-serif; font-size:14px; color:#333; outline:none; margin-bottom:14px; }
   .btn-row { display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; }
-  button.primary { background:var(--purple); color:white; border:none; border-radius:10px; padding:12px 26px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:.06em; cursor:pointer; transition:background .2s; }
+  button.primary { background:var(--purple); color:white; border:none; border-radius:10px; padding:12px 26px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:.06em; cursor:pointer; }
   button.primary:hover { background:var(--purple-dark); }
   button.secondary { background:transparent; color:var(--purple); border:2px solid var(--purple-light); border-radius:10px; padding:10px 20px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; cursor:pointer; }
   button:disabled { opacity:.5; cursor:not-allowed; }
@@ -26,11 +26,11 @@
 
   #karticky { max-width:960px; margin:0 auto; display:flex; flex-wrap:wrap; gap:24px; justify-content:center; }
 
-  /* A6 = 148×105mm @ 96dpi = 559×397px */
+  /* A6 = 148x105mm @ 96dpi = 559x397px — BEZ border-radius */
   .karta {
-    width:559px; height:397px;
+    width:559px;
+    height:397px;
     background:white;
-    border-radius:8px;
     box-shadow:0 4px 20px rgba(0,0,0,.15);
     position:relative;
     overflow:hidden;
@@ -57,7 +57,7 @@
     border-bottom:2px solid var(--purple-light);
     flex-shrink:0;
   }
-  .karta-name-label { font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#aaa; margin-bottom:3px; }
+  .karta-name-label { font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#aaa; margin-bottom:3px; }
   .karta-name-value { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:36px; color:var(--purple-dark); letter-spacing:-.01em; line-height:1; }
 
   .karta-body {
@@ -69,13 +69,7 @@
     padding:10px 18px 12px;
   }
 
-  .disciplina {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-  }
+  .disciplina { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
 
   .punch-circle {
     width:52px; height:52px;
@@ -89,26 +83,13 @@
   }
   .punch-circle img { width:32px; height:32px; opacity:.45; object-fit:contain; display:block; }
 
-  .disciplina-num {
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:700; font-size:12px;
-    color:#bbb; letter-spacing:.06em;
-  }
+  .disciplina-num { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; color:#bbb; letter-spacing:.06em; }
 
   @media print {
-    * { border-radius:0 !important; }
     body { background:white; padding:0; }
     #editor { display:none; }
     #karticky { gap:4mm; padding:6mm; justify-content:flex-start; }
-    .karta {
-      width:148mm; height:105mm;
-      box-shadow:none;
-      border:0.5px solid #ccc;
-      border-radius:0 !important;
-      overflow:hidden;
-      -webkit-print-color-adjust:exact;
-      page-break-inside:avoid;
-    }
+    .karta { width:148mm; height:105mm; box-shadow:none; border:0.5px solid #ccc; page-break-inside:avoid; }
   }
 </style>
 </head>
@@ -117,13 +98,10 @@
 <div id="editor">
   <h1>Generátor kartiček</h1>
   <p class="sub">SK Slovan Kunratice · Dokopná</p>
-
   <label>Kategorie</label>
   <input type="text" id="kategorie" value="Mladší přípravka">
-
   <label>Jména hráčů (každé na nový řádek)</label>
   <textarea id="names" placeholder="Jan Novák&#10;Tomáš Procházka&#10;Adam Blohon&#10;..."></textarea>
-
   <div class="btn-row">
     <button class="primary" onclick="generate()">Vygenerovat kartičky</button>
     <button class="secondary" id="btnDownload" onclick="downloadAll()" disabled>⬇ Stáhnout vše jako JPG</button>
@@ -245,7 +223,7 @@ async function downloadAll() {
     ctx.drawImage(baseCanvas, 0, 0);
 
     if (logoImage) {
-      var maxS = 52 * 2;
+      var maxS = 58 * 2;
       var lw = logoImage.naturalWidth, lh = logoImage.naturalHeight;
       var ratio = Math.min(maxS / lw, maxS / lh);
       var dw = lw * ratio, dh = lh * ratio;
