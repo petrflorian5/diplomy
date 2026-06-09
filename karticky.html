@@ -15,6 +15,7 @@
   #editor p.sub { color:#555; font-size:13px; margin-bottom:20px; }
   #editor label { display:block; font-size:12px; font-weight:600; color:var(--purple-dark); margin-bottom:5px; text-transform:uppercase; letter-spacing:.05em; }
   #editor textarea { width:100%; min-height:120px; border:2px solid var(--purple-light); border-radius:10px; padding:12px 14px; font-family:'Barlow',sans-serif; font-size:15px; color:#333; resize:vertical; outline:none; }
+  #editor input[type="text"] { width:100%; border:2px solid var(--purple-light); border-radius:10px; padding:10px 13px; font-family:'Barlow',sans-serif; font-size:16px; color:#333; outline:none; margin-bottom:14px; }
   .btn-row { display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; }
   button.primary { background:var(--purple); color:white; border:none; border-radius:10px; padding:12px 26px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:.06em; cursor:pointer; transition:background .2s; }
   button.primary:hover { background:var(--purple-dark); }
@@ -25,11 +26,11 @@
 
   #karticky { max-width:960px; margin:0 auto; display:flex; flex-wrap:wrap; gap:24px; justify-content:center; }
 
-  /* A6 = 148×105mm → při 96dpi: 559×397px */
+  /* A6 = 148×105mm @ 96dpi = 559×397px */
   .karta {
     width:559px; height:397px;
     background:white;
-    border-radius:10px;
+    border-radius:8px;
     box-shadow:0 4px 20px rgba(0,0,0,.15);
     position:relative;
     overflow:hidden;
@@ -38,37 +39,34 @@
     flex-shrink:0;
   }
 
-  /* Záhlaví */
   .karta-header {
     background:var(--purple);
-    padding:12px 16px 10px;
+    padding:13px 18px 11px;
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:13px;
     flex-shrink:0;
   }
-  .karta-logo { width:46px; height:46px; object-fit:contain; flex-shrink:0; }
+  .karta-logo { width:58px; height:58px; object-fit:contain; flex-shrink:0; }
   .karta-header-text { flex:1; }
-  .karta-club  { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:16px; letter-spacing:.1em; color:white; text-transform:uppercase; line-height:1.2; }
-  .karta-title { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; letter-spacing:.08em; color:rgba(255,255,255,.8); text-transform:uppercase; }
+  .karta-club  { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; letter-spacing:.1em; color:white; text-transform:uppercase; line-height:1.2; }
+  .karta-title { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:16px; letter-spacing:.07em; color:rgba(255,255,255,.85); text-transform:uppercase; margin-top:2px; }
 
-  /* Jméno */
   .karta-name {
-    padding:9px 16px 7px;
-    border-bottom:1.5px solid var(--purple-light);
+    padding:10px 18px 8px;
+    border-bottom:2px solid var(--purple-light);
     flex-shrink:0;
   }
-  .karta-name-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#aaa; margin-bottom:2px; }
-  .karta-name-value { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:26px; color:var(--purple-dark); letter-spacing:-.01em; line-height:1; }
+  .karta-name-label { font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#aaa; margin-bottom:3px; }
+  .karta-name-value { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:36px; color:var(--purple-dark); letter-spacing:-.01em; line-height:1; }
 
-  /* Disciplíny grid 5×2 */
   .karta-body {
     flex:1;
     display:grid;
     grid-template-columns:repeat(5,1fr);
     grid-template-rows:1fr 1fr;
-    gap:8px;
-    padding:10px 16px 12px;
+    gap:6px;
+    padding:10px 18px 12px;
   }
 
   .disciplina {
@@ -79,9 +77,8 @@
     gap:4px;
   }
 
-  /* Kroužek s fotbalovým míčem SVG */
   .punch-circle {
-    width:44px; height:44px;
+    width:52px; height:52px;
     border-radius:50%;
     border:2px solid var(--purple-light);
     background:white;
@@ -90,19 +87,28 @@
     justify-content:center;
     flex-shrink:0;
   }
-  .punch-circle svg { width:26px; height:26px; opacity:.3; }
+  .punch-circle img { width:32px; height:32px; opacity:.45; object-fit:contain; display:block; }
 
   .disciplina-num {
     font-family:'Barlow Condensed',sans-serif;
-    font-weight:700; font-size:10px;
+    font-weight:700; font-size:12px;
     color:#bbb; letter-spacing:.06em;
   }
 
   @media print {
+    * { border-radius:0 !important; }
     body { background:white; padding:0; }
     #editor { display:none; }
-    #karticky { gap:6mm; padding:8mm; justify-content:flex-start; }
-    .karta { width:148mm; height:105mm; box-shadow:none; border:0.5px solid #ddd; page-break-inside:avoid; border-radius:0; }
+    #karticky { gap:4mm; padding:6mm; justify-content:flex-start; }
+    .karta {
+      width:148mm; height:105mm;
+      box-shadow:none;
+      border:0.5px solid #ccc;
+      border-radius:0 !important;
+      overflow:hidden;
+      -webkit-print-color-adjust:exact;
+      page-break-inside:avoid;
+    }
   }
 </style>
 </head>
@@ -110,9 +116,14 @@
 
 <div id="editor">
   <h1>Generátor kartiček</h1>
-  <p class="sub">SK Slovan Kunratice · Dokopná 2025/2026 · Mladší přípravka</p>
+  <p class="sub">SK Slovan Kunratice · Dokopná</p>
+
+  <label>Kategorie</label>
+  <input type="text" id="kategorie" value="Mladší přípravka">
+
   <label>Jména hráčů (každé na nový řádek)</label>
   <textarea id="names" placeholder="Jan Novák&#10;Tomáš Procházka&#10;Adam Blohon&#10;..."></textarea>
+
   <div class="btn-row">
     <button class="primary" onclick="generate()">Vygenerovat kartičky</button>
     <button class="secondary" id="btnDownload" onclick="downloadAll()" disabled>⬇ Stáhnout vše jako JPG</button>
@@ -133,6 +144,7 @@ function sanitize(str) { return str.replace(/[^a-z0-9]/gi, "_"); }
 
 function generate() {
   var raw = document.getElementById("names").value;
+  var kategorie = document.getElementById("kategorie").value || "Mladší přípravka";
   var names = raw.split("\n").map(function(n){ return n.trim(); }).filter(function(n){ return n.length > 0; });
   var container = document.getElementById("karticky");
   container.innerHTML = "";
@@ -150,7 +162,7 @@ function generate() {
     for (var d = 1; d <= 10; d++) {
       disciplines +=
         "<div class=\"disciplina\">" +
-          "<div class=\"punch-circle\"><img src=\"" + BALL_SRC + "\" style=\"width:26px;height:26px;opacity:.5;object-fit:contain;display:block;\"></div>" +
+          "<div class=\"punch-circle\"><img src=\"" + BALL_SRC + "\" alt=\"\"></div>" +
           "<div class=\"disciplina-num\">" + d + "</div>" +
         "</div>";
     }
@@ -160,7 +172,7 @@ function generate() {
         "<img class=\"karta-logo\" src=\"" + LOGO_SRC + "\" alt=\"logo\">" +
         "<div class=\"karta-header-text\">" +
           "<div class=\"karta-club\">SK Slovan Kunratice</div>" +
-          "<div class=\"karta-title\">Dokopná 2025/2026 · Mladší přípravka</div>" +
+          "<div class=\"karta-title\">Dokopná 2025/2026 · " + kategorie + "</div>" +
         "</div>" +
       "</div>" +
       "<div class=\"karta-name\">" +
@@ -207,7 +219,6 @@ async function downloadAll() {
     progress.textContent = "Exportuji " + (i+1) + " / " + karty.length + " — " + name + "...";
     await new Promise(function(r){ setTimeout(r, 50); });
 
-    // Skryj logo pro html2canvas
     var logoEl = karty[i].querySelector(".karta-logo");
     logoEl.style.visibility = "hidden";
 
@@ -227,21 +238,19 @@ async function downloadAll() {
 
     logoEl.style.visibility = "visible";
 
-    // Finální canvas s logem nakresleným ručně
     var W = 559 * 2, H = 397 * 2;
     var final = document.createElement("canvas");
     final.width = W; final.height = H;
     var ctx = final.getContext("2d");
     ctx.drawImage(baseCanvas, 0, 0);
 
-    // Logo: contain do 46x46 @ scale 2
     if (logoImage) {
-      var maxS = 46 * 2;
+      var maxS = 52 * 2;
       var lw = logoImage.naturalWidth, lh = logoImage.naturalHeight;
       var ratio = Math.min(maxS / lw, maxS / lh);
       var dw = lw * ratio, dh = lh * ratio;
-      var dx = 16*2 + (maxS - dw) / 2;
-      var dy = 12*2 + (maxS - dh) / 2;
+      var dx = 18*2 + (maxS - dw) / 2;
+      var dy = 13*2 + (maxS - dh) / 2;
       ctx.drawImage(logoImage, dx, dy, dw, dh);
     }
 
