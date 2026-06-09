@@ -63,7 +63,7 @@
   .karta-body {
     flex:1;
     display:grid;
-    grid-template-columns:repeat(5,1fr);
+    grid-template-columns:repeat(4,1fr);
     grid-template-rows:1fr 1fr;
     gap:6px;
     padding:10px 18px 12px;
@@ -137,7 +137,7 @@ function generate() {
     k.className = "karta";
 
     var disciplines = "";
-    for (var d = 1; d <= 10; d++) {
+    for (var d = 1; d <= 8; d++) {
       disciplines +=
         "<div class=\"disciplina\">" +
           "<div class=\"punch-circle\"><img src=\"" + BALL_SRC + "\" alt=\"\"></div>" +
